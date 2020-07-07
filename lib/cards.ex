@@ -11,7 +11,7 @@ defmodule Cards do
   end
 
   def deal(deck, hand_size) do
-    # Splits deck into as many elements as the hand_size
+    # Splits array into as many elements as the hand_size
     Enum.split(deck, hand_size)
   end
 
@@ -25,18 +25,16 @@ defmodule Cards do
   end
 
   def save(deck, filename) do
-    # Invokes erlang language
+    # Invokes erlang library
     binary = :erlang.term_to_binary(deck)
     # Write deck to filesystem
     File.write(filename, binary)
   end
 
   def load(filename) do
-    { status, binary } = Files.read(filename)
-
-    case status do
-      :ok -> :erlang.binary_to_term(binary)
-      :error -> "File does not exist"
+    case File.read(filename) do
+      { :ok, binary } -> :erlang.binary_to_term(binary)
+      { :error, _reason } -> "File does not exist"
     end
   end
 
